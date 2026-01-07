@@ -1,19 +1,40 @@
-from django.core.paginator import Paginator, EmptyPage
+from django.core.paginator import EmptyPage, Paginator
 from django.db.models import Q
 
-from core.constants.paginator import PAGE_SIZE_DEFAULT, PAGE_DEFAULT, PAGE_SIZE_MAX
+from core.constants.paginator import (
+    PAGE_DEFAULT,
+    PAGE_SIZE_DEFAULT,
+    PAGE_SIZE_MAX,
+)
 from .models import Post
 
 class PostRepository:
     def get_all_posts(self, query_params: dict | None = None):
-        page_index = query_params.get("pageIndex", PAGE_DEFAULT) if query_params else PAGE_DEFAULT
-        page_size = query_params.get("pageSize", PAGE_SIZE_DEFAULT) if query_params else PAGE_SIZE_DEFAULT
-        title = query_params.get("title", "") if query_params else ""
-        category = query_params.get("category", "") if query_params else ""
-        tag = query_params.get("tag", "") if query_params else ""
-
-        page_index = int(page_index)
-        page_size = int(page_size)
+        page_index = int(
+            query_params.get("pageIndex", PAGE_DEFAULT)
+            if query_params
+            else PAGE_DEFAULT
+        )
+        page_size = int(
+            query_params.get("pageSize", PAGE_SIZE_DEFAULT)
+            if query_params
+            else PAGE_SIZE_DEFAULT
+        )
+        title = (
+            query_params.get("title", "")
+            if query_params
+            else ""
+        )
+        category = (
+            query_params.get("category", "")
+            if query_params
+            else ""
+        )
+        tag = (
+            query_params.get("tag", "")
+            if query_params
+            else ""
+        )
 
         if page_size > PAGE_SIZE_MAX:
             page_size = PAGE_SIZE_MAX
@@ -29,9 +50,12 @@ class PostRepository:
         if tag:
             query &= Q(tags__slug=tag)
 
-
         try:
-            posts_qs = Post.objects.filter(query).only("id", "title", "slug", "created_at", "updated_at").prefetch_related("categories", "tags")
+            posts_qs = (
+                Post.objects.filter(query)
+                .only("id", "title", "slug", "created_at", "updated_at")
+                .prefetch_related("categories", "tags")
+            )
             paginator = Paginator(posts_qs, page_size)
             page_obj = paginator.page(page_index)
         except EmptyPage:

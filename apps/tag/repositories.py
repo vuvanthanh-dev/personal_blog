@@ -3,7 +3,7 @@ from .models import Tag
 
 class TagRepository:
     def get_all_tags(self):
-        return Tag.objects.filter(is_active=True).order_by("name")
+        return Tag.objects.all().order_by("name")
     
     def get_tag_by_slug(self, slug: str) -> Tag | None:
         try:
@@ -34,7 +34,6 @@ class TagRepository:
     def delete_tag(self, slug: str) -> bool:
         tag = self.get_tag_by_slug(slug)
         if tag:
-            tag.is_active = False
-            tag.save()
+            tag.delete()
             return True
         return False
