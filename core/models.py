@@ -12,13 +12,12 @@ class BaseModel(models.Model):
 
 
 class BaseSlugModel(models.Model):
-    slug = models.SlugField(unique=True, blank=True, null=True)
+    slug = models.SlugField(max_length=255, unique=True, blank=True, null=True)
 
     slug_source_field: str | None = None
 
     def save(self, *args, **kwargs):
-        if not self.slug and self.slug_source_field:
-            self.slug = slugify(getattr(self, self.slug_source_field))
+        self.slug = slugify(getattr(self, self.slug_source_field))
         super().save(*args, **kwargs)
 
     class Meta:

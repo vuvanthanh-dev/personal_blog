@@ -11,6 +11,16 @@ class PostService:
     
     def get_post_by_slug(self, slug: str):
         return self.post_repository.get_post_by_slug(slug)
+
+    def get_post_by_tag(self, tag_slug: str):
+        if not tag_slug.strip():
+            raise ValidationException(error_code=POST_TAG_EMPTY)
+        return self.post_repository.get_post_by_tag(tag_slug.strip())
+
+    def get_post_by_category(self, category_slug: str):
+        if not category_slug.strip():
+            raise ValidationException(error_code=POST_CATEGORY_EMPTY)
+        return self.post_repository.get_post_by_category(category_slug.strip())
     
     def create_post(self, title: str, content: str):
         if not title.strip():

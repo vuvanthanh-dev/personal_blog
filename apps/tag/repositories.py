@@ -1,5 +1,4 @@
 from .models import Tag
-from django.utils.text import slugify
 
 
 class TagRepository:
@@ -8,13 +7,13 @@ class TagRepository:
     
     def get_tag_by_slug(self, slug: str) -> Tag | None:
         try:
-            return Tag.objects.get(slug=slug, is_active=True)
+            return Tag.objects.get(slug=slug)
         except Tag.DoesNotExist:
             return None
 
     def get_tag_by_name(self, name: str) -> Tag | None:
         try:
-            return Tag.objects.get(name=name, is_active=True)
+            return Tag.objects.get(name=name)
         except Tag.DoesNotExist:
             return None
         
@@ -28,7 +27,6 @@ class TagRepository:
         tag = self.get_tag_by_slug(slug)
         if tag:
             tag.name = name
-            tag.slug = slugify(name)
             tag.save()
             return tag
         return None

@@ -16,6 +16,8 @@ class Post(BaseSlugModel, BaseModel):
         on_delete=models.PROTECT,
         related_name="posts",
     )
+
+    slug_source_field = "title"
     objects = CustomQuerySet.as_manager()
     
     # N-N với Category

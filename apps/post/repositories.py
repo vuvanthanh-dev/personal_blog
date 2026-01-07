@@ -1,5 +1,3 @@
-from django.utils.text import slugify
-
 from .models import Post
 
 
@@ -9,15 +7,21 @@ class PostRepository:
     
     def get_post_by_slug(self, slug: str) -> Post | None:
         try:
-            return Post.objects.get(slug=slug, is_active=True)
+            return Post.objects.get(slug=slug)
         except Post.DoesNotExist:
             return None
     
     def get_post_by_title(self, title: str) -> Post | None:
         try:
-            return Post.objects.get(title=title, is_active=True)
+            return Post.objects.get(title=title)
         except Post.DoesNotExist:
             return None
+
+    def get_post_by_tag(self, tag_slug: str):
+        return Post.objects.filter(tags__slug=tag_slug)
+
+    def get_post_by_category(self, category_slug: str):
+        return Post.objects.filter(categories__slug=category_slug)
     
     def create_post(self, title: str, content: str) -> Post | None:
         try:
@@ -30,7 +34,6 @@ class PostRepository:
         if post:
             post.title = title
             post.content = content
-            post.slug = slugify(title)
             post.save()
             return post
         return None
