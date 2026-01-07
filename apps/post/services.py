@@ -1,6 +1,6 @@
-from core.exceptions import NotFoundException, ValidationException
+from core.exception.exceptions import NotFoundException, ValidationException
 from core.utils.hash_id import decode_id
-from core.error_codes import (
+from core.constants.error_codes import (
     POST_ID_EMPTY,
     POST_TITLE_EMPTY,
     POST_CONTENT_EMPTY,
@@ -23,8 +23,8 @@ class PostService:
             raise NotFoundException(error_code=POST_NOT_FOUND)
         return self.post_repository.get_post_by_id(id)
     
-    def get_all_posts(self):
-        return self.post_repository.get_all_posts()
+    def get_all_posts(self, query_params: dict | None = None):
+        return self.post_repository.get_all_posts(query_params)
     
     def get_post_by_slug(self, slug: str):
         return self.post_repository.get_post_by_slug(slug)

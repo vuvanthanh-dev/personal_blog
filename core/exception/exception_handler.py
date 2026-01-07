@@ -2,7 +2,7 @@ from rest_framework.views import exception_handler
 from rest_framework import status
 
 from .exceptions import AppException
-from .responses import api_error
+from core.utils.responses import api_error
 
 
 def custom_exception_handler(exc, context):

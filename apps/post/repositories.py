@@ -1,9 +1,55 @@
+from django.core.paginator import Paginator, EmptyPage
+from django.db.models import Q
+
+from core.constants.paginator import PAGE_SIZE_DEFAULT, PAGE_DEFAULT, PAGE_SIZE_MAX
 from .models import Post
 
-
 class PostRepository:
-    def get_all_posts(self):
-        return Post.objects.filter(is_active=True).order_by("-created_at")
+    def get_all_posts(self, query_params: dict | None = None):
+        page_index = query_params.get("pageIndex", PAGE_DEFAULT) if query_params else PAGE_DEFAULT
+        page_size = query_params.get("pageSize", PAGE_SIZE_DEFAULT) if query_params else PAGE_SIZE_DEFAULT
+        title = query_params.get("title", "") if query_params else ""
+        category = query_params.get("category", "") if query_params else ""
+        tag = query_params.get("tag", "") if query_params else ""
+
+        page_index = int(page_index)
+        page_size = int(page_size)
+
+        if page_size > PAGE_SIZE_MAX:
+            page_size = PAGE_SIZE_MAX
+
+        query = Q()
+
+        if title:
+            query &= Q(title__icontains=title)
+
+        if category:
+            query &= Q(categories__slug=category)
+
+        if tag:
+            query &= Q(tags__slug=tag)
+
+
+        try:
+            posts_qs = Post.objects.filter(query).only("id", "title", "slug", "created_at", "updated_at").prefetch_related("categories", "tags")
+            paginator = Paginator(posts_qs, page_size)
+            page_obj = paginator.page(page_index)
+        except EmptyPage:
+            return {
+                "items": [],
+                "total_records": paginator.count,
+                "page_index": page_index,
+                "page_size": page_size,
+                "total_pages": paginator.num_pages,
+            }
+
+        return {
+            "items": page_obj.object_list,
+            "total_records": paginator.count,
+            "page_index": page_obj.number,
+            "page_size": page_size,
+            "total_pages": paginator.num_pages,
+        }
 
     def get_post_by_id(self, id: int) -> Post | None:
         try:

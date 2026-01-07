@@ -1,7 +1,7 @@
 
 from rest_framework.decorators import api_view
-from core.error_codes import CATEGORY_SUCCESS
-from core.responses import api_success
+from core.constants.error_codes import CATEGORY_SUCCESS
+from core.utils.responses import api_success
 
 from .services import CategoryService
 from .serializers import CategorySerializer

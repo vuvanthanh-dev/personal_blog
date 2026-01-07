@@ -1,6 +1,6 @@
 from .repositories import TagRepository
-from core.exceptions import NotFoundException, ConflictException, ValidationException
-from core.error_codes import TAG_NOT_FOUND, TAG_NAME_ALREADY_EXISTS, TAG_NAME_EMPTY
+from core.exception.exceptions import NotFoundException, ConflictException, ValidationException
+from core.constants.error_codes import TAG_NOT_FOUND, TAG_NAME_ALREADY_EXISTS, TAG_NAME_EMPTY
 
 
 class TagService:

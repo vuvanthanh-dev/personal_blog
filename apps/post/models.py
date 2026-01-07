@@ -3,7 +3,7 @@ from django.conf import settings
 from django.utils.text import slugify
 from django_ckeditor_5.fields import CKEditor5Field
 
-from core.models import BaseModel, BaseSlugModel, CustomQuerySet
+from core.base.models import BaseModel, BaseSlugModel, CustomQuerySet
 from apps.category.models import Category
 from apps.tag.models import Tag
 

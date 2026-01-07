@@ -1,5 +1,5 @@
 from django.db import models
-from core.models import BaseModel, BaseSlugModel
+from core.base.models import BaseModel, BaseSlugModel
 
 
 class Tag(BaseSlugModel, BaseModel):
