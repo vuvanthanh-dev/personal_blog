@@ -7,3 +7,4 @@ from .models import Category
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ("name", "slug")
     search_fields = ("name", "slug")
+    readonly_fields = ("slug",)
