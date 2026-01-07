@@ -1,0 +1,8 @@
+djangorestframework
+django-ckeditor-5
+gunicorn
+Django
+djangorestframework-simplejwt
+django-filter
+django-jazzmin
+Pillow
