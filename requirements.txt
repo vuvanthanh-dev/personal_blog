@@ -6,3 +6,4 @@ djangorestframework-simplejwt
 django-filter
 django-jazzmin
 Pillow
+hashids

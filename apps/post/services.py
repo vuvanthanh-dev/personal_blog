@@ -1,10 +1,27 @@
 from core.exceptions import NotFoundException, ValidationException
-from core.error_codes import POST_TITLE_EMPTY, POST_CONTENT_EMPTY, POST_NOT_FOUND, POST_TITLE_ALREADY_EXISTS
+from core.utils.hash_id import decode_id
+from core.error_codes import (
+    POST_ID_EMPTY,
+    POST_TITLE_EMPTY,
+    POST_CONTENT_EMPTY,
+    POST_NOT_FOUND,
+    POST_TITLE_ALREADY_EXISTS,
+    POST_TAG_EMPTY,
+    POST_CATEGORY_EMPTY,
+)
 from .repositories import PostRepository
 
 class PostService:
     def __init__(self, post_repository: PostRepository | None = None):
         self.post_repository = post_repository or PostRepository()
+
+    def get_post_by_id(self, hash_id: str):
+        if not hash_id.strip():
+            raise ValidationException(error_code=POST_ID_EMPTY)
+        id = decode_id(hash_id.strip())
+        if id is None:
+            raise NotFoundException(error_code=POST_NOT_FOUND)
+        return self.post_repository.get_post_by_id(id)
     
     def get_all_posts(self):
         return self.post_repository.get_all_posts()

@@ -12,6 +12,10 @@ post_service = PostService()
 def get_all_posts(request):
     return api_success(data=PostSerializer(post_service.get_all_posts(), many=True).data, error_code=POST_SUCCESS)
 
+@api_view(["GET"])
+def get_post_by_id(request, id):
+    return api_success(data=PostSerializer(post_service.get_post_by_id(id)).data, error_code=POST_SUCCESS)
+
 
 @api_view(["GET"])
 def get_post_by_slug(request, slug):

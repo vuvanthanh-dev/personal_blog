@@ -4,6 +4,12 @@ from .models import Post
 class PostRepository:
     def get_all_posts(self):
         return Post.objects.filter(is_active=True).order_by("-created_at")
+
+    def get_post_by_id(self, id: int) -> Post | None:
+        try:
+            return Post.objects.get(id=id)
+        except Post.DoesNotExist:
+            return None
     
     def get_post_by_slug(self, slug: str) -> Post | None:
         try:
