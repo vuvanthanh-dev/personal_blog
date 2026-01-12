@@ -12,9 +12,17 @@ category_service = CategoryService()
 
 @api_view(["GET"])
 def get_all_categories(request):
-    return api_success(data=CategorySerializer(category_service.get_all_categories(), many=True).data, error_code=CATEGORY_SUCCESS)
+    categories = category_service.get_all_categories(request.query_params)
+    return api_success(data={
+        "items": CategorySerializer(categories["items"], many=True).data,
+        "totalRecords": categories["total_records"],
+        "totalPages": categories["total_pages"],
+        "pageIndex": categories["page_index"],
+        "pageSize": categories["page_size"],
+    }, error_code=CATEGORY_SUCCESS)
 
 
 @api_view(["GET"])
 def get_category_by_slug(request, slug):
-    return api_success(data=CategorySerializer(category_service.get_category_by_slug(slug)).data, error_code=CATEGORY_SUCCESS)
+    category = category_service.get_category_by_slug(slug)
+    return api_success(data=CategorySerializer(category).data, error_code=CATEGORY_SUCCESS)

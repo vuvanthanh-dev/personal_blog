@@ -13,8 +13,14 @@ tag_service = TagService()
 
 @api_view(["GET"])
 def tag_list(request):
-    tags = tag_service.get_all_tags()
-    return api_success(data=TagSerializer(tags, many=True).data, error_code=TAG_SUCCESS)
+    tags = tag_service.get_all_tags(request.query_params)
+    return api_success(data={
+        "items": TagSerializer(tags["items"], many=True).data,
+        "totalRecords": tags["total_records"],
+        "totalPages": tags["total_pages"],
+        "pageIndex": tags["page_index"],
+        "pageSize": tags["page_size"],
+    }, error_code=TAG_SUCCESS)
 
 
 @api_view(["GET"])

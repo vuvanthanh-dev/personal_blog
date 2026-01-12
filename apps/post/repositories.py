@@ -99,17 +99,19 @@ class PostRepository:
     def get_post_by_category(self, category_slug: str):
         return Post.objects.filter(categories__slug=category_slug)
     
-    def create_post(self, title: str, content: str) -> Post | None:
+    def create_post(self, title: str, content: str, categories: list[str], tags: list[str]) -> Post | None:
         try:
-            return Post.objects.create(title=title, content=content)
+            return Post.objects.create(title=title, content=content, categories=categories, tags=tags)
         except Post.DoesNotExist:
             return None
     
-    def update_post(self, slug: str, title: str, content: str) -> Post | None:
+    def update_post(self, slug: str, title: str, content: str, categories: list[str], tags: list[str]) -> Post | None:
         post = self.get_post_by_slug(slug)
         if post:
             post.title = title
             post.content = content
+            post.categories = categories
+            post.tags = tags
             post.save()
             return post
         return None

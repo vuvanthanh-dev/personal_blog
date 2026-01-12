@@ -25,7 +25,16 @@ SECRET_KEY = 'django-insecure-crtdkzcn8p6v*87dn5kx0x3y@!c#7+4%u*s5*=k8puj&gu2f*5
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    "localhost",
+    "127.0.0.1",
+    "0.0.0.0",
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:8080",
+    "http://127.0.0.1:8080",
+]
 
 
 # Application definition
@@ -33,6 +42,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
+    'corsheaders',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
@@ -46,6 +56,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -121,6 +132,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = BASE_DIR / "staticfiles"
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
@@ -145,3 +157,7 @@ CKEDITOR_5_CONFIGS = {
 REST_FRAMEWORK = {
     "EXCEPTION_HANDLER": "core.exception.exception_handler.custom_exception_handler"
 }
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5173",
+]

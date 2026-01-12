@@ -15,8 +15,8 @@ class CategoryService:
     def __init__(self, category_repository: CategoryRepository | None = None):
         self.category_repository = category_repository or CategoryRepository()
     
-    def get_all_categories(self):
-        return self.category_repository.get_all_categories()
+    def get_all_categories(self, query_params: dict | None = None):
+        return self.category_repository.get_all_categories(query_params)
     
     def get_category_by_slug(self, slug: str):
         return self.category_repository.get_category_by_slug(slug)

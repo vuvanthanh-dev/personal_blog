@@ -39,7 +39,7 @@ class PostService:
             raise ValidationException(error_code=POST_CATEGORY_EMPTY)
         return self.post_repository.get_post_by_category(category_slug.strip())
     
-    def create_post(self, title: str, content: str):
+    def create_post(self, title: str, content: str, categories: list[str], tags: list[str]):
         if not title.strip():
             raise ValidationException(error_code=POST_TITLE_EMPTY)
         if not content.strip():
@@ -48,14 +48,14 @@ class PostService:
             raise ValidationException(error_code=POST_TITLE_ALREADY_EXISTS)
         return self.post_repository.create_post(title, content)
     
-    def update_post(self, slug: str, title: str, content: str):
+    def update_post(self, slug: str, title: str, content: str, categories: list[str], tags: list[str]):
         if not title.strip():
             raise ValidationException(error_code=POST_TITLE_EMPTY)
         if not content.strip():
             raise ValidationException(error_code=POST_CONTENT_EMPTY)
         if self.post_repository.get_post_by_slug(slug) is None:
             raise NotFoundException(error_code=POST_NOT_FOUND)
-        return self.post_repository.update_post(slug, title, content)
+        return self.post_repository.update_post(slug, title, content, categories, tags)
     
     def delete_post(self, slug: str):
         if self.post_repository.get_post_by_slug(slug) is None:

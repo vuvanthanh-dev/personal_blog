@@ -15,8 +15,8 @@ class TagService:
     def __init__(self, tag_repository: TagRepository | None = None):
         self.tag_repository = tag_repository or TagRepository()
     
-    def get_all_tags(self) -> list[Tag]:
-        return self.tag_repository.get_all_tags()
+    def get_all_tags(self, query_params: dict | None = None):
+        return self.tag_repository.get_all_tags(query_params)
     
     def get_tag_by_slug(self, slug: str) -> Tag:
         return self.tag_repository.get_tag_by_slug(slug)

@@ -7,3 +7,4 @@ django-filter
 django-jazzmin
 Pillow
 hashids
+django-cors-headers
